@@ -3,3 +3,5 @@ doc/*
 .js
 *.iml
 *.idea
+tmp
+

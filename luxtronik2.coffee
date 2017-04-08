@@ -41,6 +41,14 @@ module.exports = (env) ->
     #     
     # 
     init: (app, @framework, @config) =>
+      # register devices
+      deviceConfigDef = require("./luxtronik2-device-config-schema.coffee")
+      @framework.deviceManager.registerDeviceClass("Luxtronic2Data", {
+        configDef: deviceConfigDef.Luxtronic2Data,
+        createCallback: (config, lastState) =>
+          return new Luxtronic2DataDevice config, @, lastState
+      })
+
       env.logger.info("Hello World")
       hostIp = '192.168.1.44'
       # <- Enter your Luxtronik IP here
