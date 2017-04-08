@@ -21,10 +21,9 @@ module.exports = (env) ->
   assert = env.require 'cassert'
 
   # Include you own depencies with nodes global require function:
-  #  
-  #     someThing = require 'someThing'
-  #  
   Luxtronik = require 'luxtronik2'
+  Promise.promisifyAll(Luxtronik.prototype)
+  commons = require('pimatic-plugin-commons')(env)
 
   # ###Luxtronik2Plugin class
   # Create a class that extends the Plugin class and implements the following functions:
@@ -40,23 +39,56 @@ module.exports = (env) ->
     #     section of the config.json file 
     #     
     # 
-    init: (app, @framework, @config) =>
+    init: (app, @framework, config) =>
+      @host = config.host
+      @port = config.port
+      @interval = config.interval
+      @pump = new Luxtronik(@host, @port)
+
+
       # register devices
-      deviceConfigDef = require("./luxtronik2-device-config-schema.coffee")
+      deviceConfigDef = require("./device-config-schema.coffee")
       @framework.deviceManager.registerDeviceClass("Luxtronic2Data", {
         configDef: deviceConfigDef.Luxtronic2Data,
         createCallback: (config, lastState) =>
           return new Luxtronic2DataDevice config, @, lastState
       })
 
-      env.logger.info("Hello World")
-      hostIp = '192.168.1.44'
-      # <- Enter your Luxtronik IP here
-      pump = new Luxtronik(hostIp, 8888)
-      pump.read false, (data) ->
-        env.logger.info("**************************************")
-        env.logger.info(data)
-      return
+  class Luxtronic2DataDevice extends env.devices.Device
+    getTemperature: -> Promise.resolve(30)
+
+    constructor: (@config, @plugin, @service) ->
+      @id = @config.id
+      @base = commons.base @, @config.class unless @base?
+      @name = @config.name
+      @temperature_supply
+      @pump = @plugin.pump
+      @interval = 1000 * @plugin.interval
+      env.logger.info("interval")
+      env.logger.info(@interval)
+      super()
+
+      process.nextTick () =>
+        @_requestUpdate()
+
+      @on 'data', ((data) =>
+        @temperature_supply = data.values.temperature_supply
+        env.logger.info(@temperature_supply)
+      )
+
+    destroy: () ->
+      @base.cancelUpdate()
+      super()
+
+    _requestUpdate: ->
+
+      @pump.readAsync(false).then((data) =>
+        @emit "data", data
+      ).catch((data) =>
+        @emit "data", data
+      ).finally(() =>
+        @base.scheduleUpdate @_requestUpdate, @interval
+      )
 
   # ###Finally
   # Create a instance of my plugin

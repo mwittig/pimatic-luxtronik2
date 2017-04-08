@@ -6,7 +6,8 @@
   "files": [
     "luxtronik2.coffee",
     "README.md",
-    "luxtronik2-config-schema.coffee"
+    "luxtronik2-config-schema.coffee",
+    "device-config-schema.coffee"
   ],
   "version": "0.0.1",
   "homepage": "http://your-plugin-website",
@@ -17,7 +18,8 @@
   },
   "configSchema": "luxtronik2-config-schema.coffee",
   "dependencies": {
-    "luxtronik2": "0.0.1"
+    "luxtronik2": "0.0.1",
+    "pimatic-plugin-commons": "^0.9.3"
   },
   "peerDependencies": {
     "pimatic": "0.8.*"
