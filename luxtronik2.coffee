@@ -24,11 +24,11 @@ module.exports = (env) ->
   #  
   #     someThing = require 'someThing'
   #  
-  luxtronik = require('./luxtronik');
+  Luxtronik = require 'luxtronik2'
 
-  # ###LuxtronikPlugin class
+  # ###Luxtronik2Plugin class
   # Create a class that extends the Plugin class and implements the following functions:
-  class LuxtronikPlugin extends env.plugins.Plugin
+  class Luxtronik2Plugin extends env.plugins.Plugin
 
     # ####init()
     # The `init` function is called by the framework to ask your plugin to initialise.
@@ -44,14 +44,14 @@ module.exports = (env) ->
       env.logger.info("Hello World")
       hostIp = '192.168.1.44'
       # <- Enter your Luxtronik IP here
-      pump = new luxtronik(hostIp, 8888)
+      pump = new Luxtronik(hostIp, 8888)
       pump.read false, (data) ->
         env.logger.info("**************************************")
-      #  env.logger.info(data)
+        env.logger.info(data)
       return
 
   # ###Finally
-  # Create a instance of luxtronik plugin
-  luxtronikPlugin = new LuxtronikPlugin
+  # Create a instance of my plugin
+  luxtronik2 = new Luxtronik2Plugin
   # and return it to the framework.
-  return luxtronikPlugin
+  return luxtronik2

@@ -1,21 +1,21 @@
 {
   "name": "pimatic-luxtronik2",
-  "description": "pimatic-luxtronik2",
+  "description": "The plugin description",
   "author": "Your Name <you@example.com> (http://your-website)",
-  "main": "luxtronik-plugin",
+  "main": "luxtronik2",
   "files": [
-    "luxtronik2-plugin.coffee",
+    "luxtronik2.coffee",
     "README.md",
-    "luxtronik2-plugin-config-schema.coffee"
+    "luxtronik2-config-schema.coffee"
   ],
-  "version": "1.0.0",
+  "version": "0.8.0",
   "homepage": "http://your-plugin-website",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git:github.com:bakito/pimatic-luxtronik2.git"
+    "url": "git://github.com/pimatic/pimatic-plugin-template.git"
   },
-  "configSchema": "luxtronik2-plugin-config-schema.coffee",
+  "configSchema": "luxtronik2-config-schema.coffee",
   "dependencies": {
     "luxtronik2": "0.0.1"
   },
