@@ -11,7 +11,7 @@
 module.exports = (env) ->
 
   # ###require modules included in pimatic
-  # To require modules that are included in pimatic use `env.require`. For available packages take 
+  # To require modules that are included in pimatic use `env.require`. For available packages take
   # a look at the dependencies section in pimatics package.json
 
   # Require the  bluebird promise library
@@ -31,14 +31,14 @@ module.exports = (env) ->
 
     # ####init()
     # The `init` function is called by the framework to ask your plugin to initialise.
-    #  
+    #
     # #####params:
     #  * `app` is the [express] instance the framework is using.
     #  * `framework` the framework itself
-    #  * `config` the properties the user specified as config for your plugin in the `plugins` 
-    #     section of the config.json file 
-    #     
-    # 
+    #  * `config` the properties the user specified as config for your plugin in the `plugins`
+    #     section of the config.json file
+    #
+    #
     init: (app, @framework, config) =>
       @host = config.host
       @port = config.port
@@ -55,17 +55,21 @@ module.exports = (env) ->
       })
 
   class Luxtronic2DataDevice extends env.devices.Device
-    getTemperature: -> Promise.resolve(30)
+    attributes:
+      temperatureSupply:
+        description: "The measured temperature"
+        type: "number"
+        unit: '°C'
+
+    temperatureSupply: 0.0
+
 
     constructor: (@config, @plugin, @service) ->
       @id = @config.id
       @base = commons.base @, @config.class unless @base?
       @name = @config.name
-      @temperature_supply
       @pump = @plugin.pump
       @interval = 1000 * @plugin.interval
-      env.logger.info("interval")
-      env.logger.info(@interval)
       super()
 
       process.nextTick () =>
@@ -83,12 +87,18 @@ module.exports = (env) ->
     _requestUpdate: ->
 
       @pump.readAsync(false).then((data) =>
-        @emit "data", data
+        @temperatureSupply = data.values.temperature_supply
+        env.logger.info(@temperatureSupply)
+        @emit "temperatureSupply", @temperatureSupply
       ).catch((data) =>
-        @emit "data", data
+        @temperatureSupply = data.values.temperature_supply
+        env.logger.info(@temperatureSupply)
+        @emit "temperatureSupply", @temperatureSupply
       ).finally(() =>
         @base.scheduleUpdate @_requestUpdate, @interval
       )
+
+    getTemperatureSupply: -> Promise.resolve @temperatureSupply
 
   # ###Finally
   # Create a instance of my plugin

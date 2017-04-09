@@ -6,8 +6,10 @@ module.exports = {
     type: "object"
     extensions: ["xLink", "xAttributeOptions"]
     properties:
-      temperature_supply:
-        description: "temperature_supply"
+      temperatureSupply:
+        description: "The measured temperature"
         type: "number"
+        unit: '°C'
+        required: false
   }
 }
