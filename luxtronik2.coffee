@@ -135,7 +135,7 @@ module.exports = (env) ->
     _extractError: (errors) ->
       if (errors && errors[0])
         errorString = errors[0];
-        errorString = 'Mon Apr 10 2017 16:46:13 GMT+0200 (CEST) - 718'
+        #errorString = 'Mon Apr 10 2017 16:46:13 GMT+0200 (CEST) - 718'
         separatorIndex = errorString.indexOf(" - ")
         date = new Date(errorString.substr(0, separatorIndex))
         if new Date().toDateString() == date.toDateString()
