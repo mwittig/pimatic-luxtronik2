@@ -22,7 +22,6 @@ module.exports = (env) ->
 
   # Include you own depencies with nodes global require function:
   Luxtronik = require 'luxtronik2'
-  Promise.promisifyAll(Luxtronik.prototype)
   commons = require('pimatic-plugin-commons')(env)
 
   # ###Luxtronik2Plugin class
@@ -86,17 +85,17 @@ module.exports = (env) ->
 
     _requestUpdate: ->
 
-      @pump.readAsync(false).then((data) =>
-        @temperatureSupply = data.values.temperature_supply
-        env.logger.info(@temperatureSupply)
-        @emit "temperatureSupply", @temperatureSupply
-      ).catch((data) =>
-        @temperatureSupply = data.values.temperature_supply
-        env.logger.info(@temperatureSupply)
-        @emit "temperatureSupply", @temperatureSupply
-      ).finally(() =>
-        @base.scheduleUpdate @_requestUpdate, @interval
-      )
+      @pump.read false, (data) ->
+        try
+          @temperatureSupply = data.values.temperature_supply
+          env.logger.info(@temperatureSupply)
+          @emit "temperatureSupply", @temperatureSupply
+        catch err
+          env.logger.error(err)
+        finally
+          @base.scheduleUpdate @_requestUpdate, @interval
+        return
+  
 
     getTemperatureSupply: -> Promise.resolve @temperatureSupply
 
