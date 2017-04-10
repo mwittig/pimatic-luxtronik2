@@ -68,8 +68,9 @@ module.exports = (env) ->
       super()
 
     _requestUpdate: ->
+      pump = @pump
       new Promise((resolve, reject) ->
-        @pump.read false, (data) ->
+        pump.read false, (data) ->
           if data.error
             reject data.error
           else
