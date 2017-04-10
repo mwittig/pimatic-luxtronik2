@@ -2,6 +2,7 @@
   "name": "pimatic-luxtronik2",
   "description": "The plugin description",
   "author": "bakito",
+  "license": "GPL-2.0",
   "main": "luxtronik2",
   "files": [
     "luxtronik2.coffee",
@@ -12,7 +13,6 @@
   ],
   "version": "0.0.1",
   "homepage": "http://your-plugin-website",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git://github.com:bakito/pimatic-luxtronik2.git"
