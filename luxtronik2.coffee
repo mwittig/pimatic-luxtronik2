@@ -1,18 +1,11 @@
 # #Plugin template
 
-# This is an plugin template and mini tutorial for creating pimatic plugins. It will explain the 
-# basics of how the plugin system works and how a plugin should look like.
+# This is an pimatic plugin to connect to heat pumps based on the luxtronik 2.0 control.
+# It uses the implementation from https://github.com/coolchip/luxtronik2
 
 # ##The plugin code
 
-# Your plugin must export a single function, that takes one argument and returns a instance of
-# your plugin class. The parameter is an envirement object containing all pimatic related functions
-# and classes. See the [startup.coffee](http://sweetpi.de/pimatic/docs/startup.html) for details.
 module.exports = (env) ->
-
-  # ###require modules included in pimatic
-  # To require modules that are included in pimatic use `env.require`. For available packages take
-  # a look at the dependencies section in pimatics package.json
 
   # Require the  bluebird promise library
   Promise = env.require 'bluebird'
@@ -25,18 +18,9 @@ module.exports = (env) ->
   commons = require('pimatic-plugin-commons')(env)
 
   # ###Luxtronik2Plugin class
-  # Create a class that extends the Plugin class and implements the following functions:
   class Luxtronik2Plugin extends env.plugins.Plugin
 
     # ####init()
-    # The `init` function is called by the framework to ask your plugin to initialise.
-    #
-    # #####params:
-    #  * `app` is the [express] instance the framework is using.
-    #  * `framework` the framework itself
-    #  * `config` the properties the user specified as config for your plugin in the `plugins`
-    #     section of the config.json file
-    #
     #
     init: (app, @framework, config) =>
       @host = config.host
@@ -99,8 +83,7 @@ module.exports = (env) ->
 
     getTemperatureSupply: -> Promise.resolve @temperatureSupply
 
-  # ###Finally
-  # Create a instance of my plugin
+  # Create a instance of luxtronik2	 plugin
   luxtronik2 = new Luxtronik2Plugin
   # and return it to the framework.
   return luxtronik2
