@@ -39,12 +39,34 @@ module.exports = (env) ->
 
   class Luxtronic2DataDevice extends env.devices.Device
     attributes:
-      temperatureSupply:
-        description: "The measured temperature"
+      temperatureOutside:
+        description: "The current outside temperature"
         type: "number"
         unit: '°C'
+        acronym : "Outside"
+      temperatureOutsideAvg:
+        description: "The average outside temperature"
+        type: "number"
+        unit: '°C'
+        acronym : "Outside avg"
+      temperatureHotWater:
+        description: "The current water temperature"
+        type: "number"
+        unit: '°C'
+        acronym : "Water current"
+      temperatureHotWaterTarget:
+        description: "The target water temperature"
+        type: "number"
+        unit: '°C'
+        acronym : "Water target"
+      heatpumpState:
+        description: "The current heat pump state"
+        type: "string"
+        acronym : "State"
 
-    temperatureSupply: 0.0
+    temperatureHotWater: 0.0
+    temperatureHotWaterTarget: 0.0
+    heatpumpState:'N/A'
 
 
     constructor: (@config, @plugin, @service) ->
@@ -78,16 +100,31 @@ module.exports = (env) ->
           return
         return
       ).then((data) =>
-        @temperatureSupply = data.values.temperature_supply
-        env.logger.info(@temperatureSupply)
-        @emit "temperatureSupply", @temperatureSupply
+        @temperatureOutside = data.values.temperature_outside
+        @temperatureOutsideAvg = data.values.temperature_outside_avg
+        @temperatureHotWater = data.values.temperature_hot_water
+        @temperatureHotWaterTarget = data.values.temperature_hot_water_target
+        @heatpumpState = data.values.heatpump_state_string
+
+
+        env.logger.debug('data received')
+
+        @emit "temperatureOutside", @temperatureOutside
+        @emit "temperatureOutsideAvg", @temperatureOutsideAvg
+        @emit "temperatureHotWater", @temperatureHotWater
+        @emit "temperatureHotWaterTarget", @temperatureHotWaterTarget
+        @emit "heatpumpState", @heatpumpState
       ).catch((error) =>
         env.logger.error(error)
       ).finally(() =>
         @base.scheduleUpdate @_requestUpdate, @interval
       )
 
-    getTemperatureSupply: -> Promise.resolve @temperatureSupply
+    getTemperatureOutside: -> Promise.resolve @temperatureOutside
+    getTemperatureOutsideAvg: -> Promise.resolve @temperatureHotWater
+    getTemperatureHotWater: -> Promise.resolve @temperatureOutsideAvg
+    getTemperatureHotWaterTarget: -> Promise.resolve @temperatureHotWaterTarget
+    getHeatpumpState: -> Promise.resolve @heatpumpState
 
   # Create a instance of luxtronik2 plugin
   luxtronik2 = new Luxtronik2Plugin
