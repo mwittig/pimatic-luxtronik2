@@ -15,7 +15,9 @@ module.exports = (env) ->
 
   # Include you own depencies with nodes global require function:
   Luxtronik = require 'luxtronik2'
+  DateFormat = require 'dateformat'
   commons = require('pimatic-plugin-commons')(env)
+  types = require("./types.coffee")
 
   # ###Luxtronik2Plugin class
   class Luxtronik2Plugin extends env.plugins.Plugin
@@ -63,10 +65,17 @@ module.exports = (env) ->
         description: "The current heat pump state"
         type: "string"
         acronym : "State"
+      lastError:
+        description: "The last error"
+        type: "string"
+        acronym : "Last Error"
 
+    temperatureOutside: 0.0
+    temperatureOutsideAvg: 0.0
     temperatureHotWater: 0.0
     temperatureHotWaterTarget: 0.0
     heatpumpState:'N/A'
+    lastError:'N/A'
 
 
     constructor: (@config, @plugin, @service) ->
@@ -100,12 +109,14 @@ module.exports = (env) ->
           return
         return
       ).then((data) =>
+
         @temperatureOutside = data.values.temperature_outside
         @temperatureOutsideAvg = data.values.temperature_outside_avg
         @temperatureHotWater = data.values.temperature_hot_water
         @temperatureHotWaterTarget = data.values.temperature_hot_water_target
         @heatpumpState = data.values.heatpump_state_string
 
+        @lastError= @_extractError data.values.errors
 
         env.logger.debug('data received')
 
@@ -114,17 +125,40 @@ module.exports = (env) ->
         @emit "temperatureHotWater", @temperatureHotWater
         @emit "temperatureHotWaterTarget", @temperatureHotWaterTarget
         @emit "heatpumpState", @heatpumpState
+        @emit "lastError", @lastError
       ).catch((error) =>
         env.logger.error(error)
       ).finally(() =>
         @base.scheduleUpdate @_requestUpdate, @interval
       )
 
+    _extractError: (errors) ->
+      if (errors && errors[0])
+        errorString = errors[0];
+        errorString = 'Mon Apr 10 2017 16:46:13 GMT+0200 (CEST) - 718'
+        separatorIndex = errorString.indexOf(" - ")
+        date = new Date(errorString.substr(0, separatorIndex))
+        if new Date().toDateString() == date.toDateString()
+
+          errorCode = errorString.substr(separatorIndex + 3)
+
+
+          if types.errorCodes[parseInt (errorCode)]
+            codeString = types.errorCodes[errorCode]
+          else
+            codeString = 'Unknown Error'
+          errorMessage = DateFormat(date, 'dd.MM.yyyy HH:MM:ss') + ' - ' + codeString + ' (' + errorCode + ')'
+          env.logger.error('Got luxtronik error: ', errorMessage)
+          return errorMessage
+
+      return 'N/A'
+
     getTemperatureOutside: -> Promise.resolve @temperatureOutside
     getTemperatureOutsideAvg: -> Promise.resolve @temperatureHotWater
     getTemperatureHotWater: -> Promise.resolve @temperatureOutsideAvg
     getTemperatureHotWaterTarget: -> Promise.resolve @temperatureHotWaterTarget
     getHeatpumpState: -> Promise.resolve @heatpumpState
+    getLastError: -> Promise.resolve @lastError
 
   # Create a instance of luxtronik2 plugin
   luxtronik2 = new Luxtronik2Plugin

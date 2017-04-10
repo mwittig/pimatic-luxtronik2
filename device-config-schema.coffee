@@ -30,5 +30,9 @@ module.exports = {
         description: "The current heat pump state"
         type: "string"
         required: false
+      lastError:
+        description: "The last error"
+        type: "string"
+        required: false
   }
 }
