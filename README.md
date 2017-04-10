@@ -6,4 +6,4 @@ It uses the implementation from https://github.com/coolchip/luxtronik2
 
 install with: 
 
-npm install bakito/pimatic-luxtronik2#master --unsafe-perm
+`npm install bakito/pimatic-luxtronik2#master --unsafe-perm`
