@@ -68,22 +68,27 @@ module.exports = (env) ->
       super()
 
     _requestUpdate: ->
-
-      @pump.read false, (data) ->
-        try
-          @temperatureSupply = data.values.temperature_supply
-          env.logger.info(@temperatureSupply)
-          @emit "temperatureSupply", @temperatureSupply
-        catch err
-          env.logger.error(err)
-        finally
-          @base.scheduleUpdate @_requestUpdate, @interval
+      new Promise((resolve, reject) ->
+        @pump.read false, (data) ->
+          if data.error
+            reject data.error
+          else
+            resolve data
+          return
         return
-  
+      ).then((data) =>
+        @temperatureSupply = data.values.temperature_supply
+        env.logger.info(@temperatureSupply)
+        @emit "temperatureSupply", @temperatureSupply
+      ).catch((error) =>
+        env.logger.error(error)
+      ).finally(() =>
+        @base.scheduleUpdate @_requestUpdate, @interval
+      )
 
     getTemperatureSupply: -> Promise.resolve @temperatureSupply
 
-  # Create a instance of luxtronik2	 plugin
+  # Create a instance of luxtronik2 plugin
   luxtronik2 = new Luxtronik2Plugin
   # and return it to the framework.
   return luxtronik2
