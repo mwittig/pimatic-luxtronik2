@@ -3,11 +3,11 @@
   "description": "The plugin description",
   "author": "bakito",
   "license": "GPL-2.0",
-  "main": "luxtronik2",
+  "main": "luxtronik2-plugin",
   "files": [
-    "luxtronik2.coffee",
+    "luxtronik2-plugin.coffee",
     "README.md",
-    "luxtronik2-config-schema.coffee",
+    "lluxtronik2-plugin-config-schema.coffee",
     "device-config-schema.coffee",
     "types.coffee"
   ],
@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git://github.com:bakito/pimatic-luxtronik2.git"
   },
-  "configSchema": "luxtronik2-config-schema.coffee",
+  "configSchema": "luxtronik2-plugin-config-schema.coffee",
   "dependencies": {
     "dateformat": "2.0.0",
     "luxtronik2": "0.0.1",
