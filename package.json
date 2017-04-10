@@ -7,7 +7,7 @@
   "files": [
     "luxtronik2-plugin.coffee",
     "README.md",
-    "lluxtronik2-plugin-config-schema.coffee",
+    "luxtronik2-plugin-config-schema.coffee",
     "device-config-schema.coffee",
     "types.coffee"
   ],
