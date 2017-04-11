@@ -65,6 +65,10 @@ module.exports = (env) ->
         description: "The current heat pump state"
         type: "string"
         acronym : "State"
+      heatpumpExtendedState:
+        description: "The current extended heat pump state"
+        type: "string"
+        acronym : "Extended State"
       lastError:
         description: "The last error"
         type: "string"
@@ -75,6 +79,7 @@ module.exports = (env) ->
     temperatureHotWater: 0.0
     temperatureHotWaterTarget: 0.0
     heatpumpState:'N/A'
+    heatpumpExtendedState:'N/A'
     lastError:'N/A'
 
 
@@ -115,6 +120,7 @@ module.exports = (env) ->
         @temperatureHotWater = data.values.temperature_hot_water
         @temperatureHotWaterTarget = data.values.temperature_hot_water_target
         @heatpumpState = data.values.heatpump_state_string
+        @heatpumpExtendedState = data.values.heatpump_extendet_state_string
 
         @lastError= @_extractError data.values.errors
 
@@ -125,6 +131,7 @@ module.exports = (env) ->
         @emit "temperatureHotWater", @temperatureHotWater
         @emit "temperatureHotWaterTarget", @temperatureHotWaterTarget
         @emit "heatpumpState", @heatpumpState
+        @emit "heatpumpExtendedState", @heatpumpExtendedState
         @emit "lastError", @lastError
       ).catch((error) =>
         env.logger.error(error)
@@ -158,6 +165,7 @@ module.exports = (env) ->
     getTemperatureHotWater: -> Promise.resolve @temperatureHotWater
     getTemperatureHotWaterTarget: -> Promise.resolve @temperatureHotWaterTarget
     getHeatpumpState: -> Promise.resolve @heatpumpState
+    getHeatpumpExtendedState: -> Promise.resolve @heatpumpExtendedState
     getLastError: -> Promise.resolve @lastError
 
   # Create a instance of luxtronik2 plugin
