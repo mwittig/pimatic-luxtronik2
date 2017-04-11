@@ -154,8 +154,8 @@ module.exports = (env) ->
       return 'N/A'
 
     getTemperatureOutside: -> Promise.resolve @temperatureOutside
-    getTemperatureOutsideAvg: -> Promise.resolve @temperatureHotWater
-    getTemperatureHotWater: -> Promise.resolve @temperatureOutsideAvg
+    getTemperatureOutsideAvg: -> Promise.resolve @temperatureOutsideAvg
+    getTemperatureHotWater: -> Promise.resolve @temperatureHotWater
     getTemperatureHotWaterTarget: -> Promise.resolve @temperatureHotWaterTarget
     getHeatpumpState: -> Promise.resolve @heatpumpState
     getLastError: -> Promise.resolve @lastError
