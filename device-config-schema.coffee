@@ -6,33 +6,11 @@ module.exports = {
     type: "object"
     extensions: ["xLink", "xAttributeOptions"]
     properties:
-      temperatureOutside:
-        description: "The current outside temperature"
-        type: "number"
-        unit: '°C'
-        required: false
-      temperatureOutsideAvg:
-        description: "The average outside temperature"
-        type: "number"
-        unit: '°C'
-        required: false
-      temperatureHotWater:
-        description: "The current water temperature"
-        type: "number"
-        unit: '°C'
-        required: false
-      temperatureHotWaterTarget:
-        description: "The target water temperature"
-        type: "number"
-        unit: '°C'
-        required: false
-      heatpumpState:
-        description: "The current heat pump state"
-        type: "string"
-        required: false
-      lastError:
-        description: "The last error"
-        type: "string"
-        required: false
+      attributes:
+        type: "array"
+        default: ["temperatureOutside", "temperatureOutsideAvg", "temperatureHotWater", "temperatureHotWaterTarget", "heatpumpState", "lastError"]
+        format: "table"
+        items:
+          type: "string"
   }
 }
