@@ -13,7 +13,7 @@ module.exports = (env) ->
   # Require the [cassert library](https://github.com/rhoot/cassert).
   assert = env.require 'cassert'
 
-  # Include you own depencies with nodes global require function:
+  # Include your own dependencies with nodes global require function:
   Luxtronik = require 'luxtronik2'
   DateFormat = require 'dateformat'
   commons = require('pimatic-plugin-commons')(env)

@@ -1,8 +1,8 @@
 module.exports = {
-  title: "pimatic-websolarlog device config schemas"
+  title: "pimatic-luxtronik2 device config schemas"
   Luxtronic2Data: {
-    title: "Fronius GetPowerFlowRealtimeData Device "
-    description: "Provides access to data of a Fronius Inverter supporting Solar API 1.1"
+    title: "Luxtronic2 Data Device"
+    description: "Provides access to heat pump data based on the luxtronik 2.0 control"
     type: "object"
     extensions: ["xLink", "xAttributeOptions"]
     properties:
