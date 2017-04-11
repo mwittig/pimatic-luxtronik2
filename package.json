@@ -1,8 +1,21 @@
 {
   "name": "pimatic-luxtronik2",
   "description": "The plugin description",
-  "author": "bakito",
+  "author": {
+    "name": "Marc Brugger",
+    "url": "https://github.com/bakito"
+  },
   "license": "GPL-2.0",
+  "contributors": [
+    {
+      "name": "Marc Brugger",
+      "url": "https://github.com/bakito"
+    },
+    {
+      "name": "Marcus Wittig",
+      "url": "https://github.com/mwittig"
+    }
+  ],
   "main": "luxtronik2-plugin",
   "files": [
     "luxtronik2-plugin.coffee",
