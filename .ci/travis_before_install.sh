@@ -1,4 +1,9 @@
 #!/bin/sh
 basename "$0"
-pwd -P
-ls -al
+echo "==============================================="
+
+echo
+echo "Installing pimatic"
+cd ..
+mkdir pimatic-app
+npm install pimatic --prefix pimatic-app --production
