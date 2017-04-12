@@ -17,7 +17,6 @@ module.exports = (env) ->
   Luxtronik = require 'luxtronik2'
   DateFormat = require 'dateformat'
   commons = require('pimatic-plugin-commons')(env)
-  types = require("./types.coffee")
 
   # ###Luxtronik2Plugin class
   class Luxtronik2Plugin extends env.plugins.Plugin
@@ -141,20 +140,10 @@ module.exports = (env) ->
 
     _extractError: (errors) ->
       if (errors && errors[0])
-        errorString = errors[0];
-        #errorString = 'Mon Apr 10 2017 16:46:13 GMT+0200 (CEST) - 718'
-        separatorIndex = errorString.indexOf(" - ")
-        date = new Date(errorString.substr(0, separatorIndex))
-        if new Date().toDateString() == date.toDateString()
+        error = errors[0];
 
-          errorCode = errorString.substr(separatorIndex + 3)
-
-
-          if types.errorCodes[parseInt (errorCode)]
-            codeString = types.errorCodes[errorCode]
-          else
-            codeString = 'Unknown Error'
-          errorMessage = DateFormat(date, 'dd.MM.yyyy HH:MM:ss') + ' - ' + codeString + ' (' + errorCode + ')'
+        if new Date().toDateString() == error.date.toDateString()
+          errorMessage = DateFormat(error.date, 'dd.MM.yyyy HH:MM:ss') + ' - ' + error.message + ' (' + error.code + ')'
           env.logger.error('Got luxtronik error: ', errorMessage)
           return errorMessage
 
