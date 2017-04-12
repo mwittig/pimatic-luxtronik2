@@ -3,3 +3,4 @@ node_js:
   - "4"
 before_install: ./.ci/travis_before_install.sh
 before_script:  ./.ci/travis_before_script.sh
+script:         ./.ci/travis_script.sh

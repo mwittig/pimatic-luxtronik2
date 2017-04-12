@@ -1,0 +1,70 @@
+{
+  "//": "Please only change this file when pimatic is NOT running, otherwise pimatic will overwrite your changes.",
+  "settings": {
+    "httpServer": {
+      "enabled": true,
+      "port": 8080
+    },
+    "debug": true,
+    "logLevel": "debug",
+    "database": {}
+  },
+  "plugins": [
+    {
+      "plugin": "luxtronik2",
+      "host": "localhost"
+    }
+  ],
+  "devices": [
+    {
+      "attributes": [
+        "temperatureOutside",
+        "temperatureOutsideAvg",
+        "temperatureHotWater",
+        "temperatureHotWaterTarget",
+        "heatpumpState",
+        "lastError"
+      ],
+      "xAttributeOptions": [],
+      "id": "test-device",
+      "name": "test-device",
+      "class": "Luxtronic2Data"
+    }
+  ],
+  "rules": [],
+  "pages": [
+    {
+      "id": "favourite",
+      "name": "Favourites",
+      "devices": []
+    }
+  ],
+  "groups": [],
+  "users": [
+    {
+      "username": "admin",
+      "password": "admin",
+      "role": "admin"
+    }
+  ],
+  "roles": [
+    {
+      "name": "admin",
+      "permissions": {
+        "pages": "write",
+        "rules": "write",
+        "variables": "write",
+        "messages": "write",
+        "events": "write",
+        "devices": "write",
+        "groups": "write",
+        "plugins": "write",
+        "updates": "write",
+        "database": "write",
+        "config": "write",
+        "controlDevices": true,
+        "restart": true
+      }
+    }
+  ]
+}
