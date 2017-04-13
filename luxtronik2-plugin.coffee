@@ -135,8 +135,7 @@ module.exports = (env) ->
       ).catch((error) =>
         if (error == 'busy')
           env.logger.debug('The device is currently busy.')
-        else
-          env.logger.error(error)
+        env.logger.error(error)
       ).finally(() =>
         @base.scheduleUpdate @_requestUpdate, @interval
       )
